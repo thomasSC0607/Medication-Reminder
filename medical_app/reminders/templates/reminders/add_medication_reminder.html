@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Recordatorio</title>
+    <!-- Bootstrap CSS (si no lo tienes ya) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Datepicker CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #c2c6cc, #eaebec);
+            color: white;
+            text-align: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex; /* Añadido para usar flexbox */
+            flex-direction: column; /* Para que los elementos hijos se alineen en columna */
+            justify-content: center; /* Centra verticalmente */
+            align-items: center; /* Centra horizontalmente */
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-top: 30px;
+            color: black;
+        }
+
+        .highlight {
+            color: #437dfc;
+        }
+
+        .btn-custom {
+            background-color: #00ffcc;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: 0.3s;
+            margin: 30px 0 40px 0;
+        }
+
+        .btn-custom:hover {
+            background-color: #00cc99;
+            color: white;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            background: rgb(65, 179, 245);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 80%;
+            background: rgb(65, 179, 245);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid white;
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form_container {
+            margin: 40px 60px 40px 60px;
+            max-width: 1000px;
+            width: 90%;
+            align-items: center;
+            justify-content: center;
+            display: flex; /* Añadido para usar flexbox en este contenedor también */
+            flex-direction: column;
+            align-items: center; /* Centra el contenido dentro de .form_container */
+        }
+
+        .container {
+            width: 80%; /* Puedes ajustar el ancho según necesites */
+            max-width: 1200px; /* Limita el ancho máximo */
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex; /* Añadido para usar flexbox en este contenedor también */
+            justify-content: center; /* Centra el contenido dentro de .container */
+            align-items: center; /* Centra el contenido dentro de .container */
+        }
+
+        .table tr{
+            background-color: rgb(65, 179, 245);;
+        }
+    </style>
+</head>
+<body>
+    
+        <h1 class="hero-title">Crear Recordatorio de <span class="highlight">Medicación</span></h1>
+        <div class="form_container">
+            <form method="post" action="{% url 'add_reminder' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn-custom">Guardar</button>
+            </form>
+        </div>
+
+        <a href="{% url 'logout' %}" class="btn-custom">Cerrar sesión</a>
+
+        <h2 class="hero-title">Lista de <span class="highlight">Recordatorios</span></h2>
+        <div class="container">
+            <table class="table">
+                <tr>
+                    <th>Medicamento</th>
+                    <th>Días</th>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th>Acciones</th>
+                </tr>
+                {% for reminder in reminders %}
+                <tr>
+                    <td>{{ reminder.medication_name }}</td>
+                    <td>{{ reminder.days_of_week }}</td>
+                    <td>{{ reminder.start_date }}</td>
+                    <td>{{ reminder.end_date }}</td>
+                    <td>
+                        <form action="{% url 'delete_reminder' reminder.pk %}" method="post" style="display:inline; background-color: #ffffff;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </td>                    
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No hay recordatorios aún.</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/locales/bootstrap-datepicker.es.min.js"></script>
+
+    <script>
+    $(document).ready(function() {
+        $('.datepicker').datepicker({
+        format: 'yyyy-mm-dd',
+        language: 'es',
+        autoclose: true,
+        todayHighlight: true,
+        startDate: new Date()
+        });
+    });
+    </script>
+
+</body>
+</html>

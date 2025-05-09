@@ -1,0 +1,57 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        .input-field {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: none;
+            width: 250px;
+        }
+        .btn-custom {
+            background-color: #00ffcc;
+            color: #1e3c72;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-custom:hover {
+            background-color: #00cc99;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="hero-title">Inicia sesión en <span class="highlight">MedReminder</span></h1>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Usuario" class="input-field" required><br>
+        <input type="password" name="password" placeholder="Contraseña" class="input-field" required><br>
+        <button type="submit" class="btn-custom">Iniciar sesión</button>
+    </form>
+    <p>¿No tienes una cuenta? <a href="{% url 'register' %}" class="highlight">Regístrate</a></p>
+</body>
+</html>
